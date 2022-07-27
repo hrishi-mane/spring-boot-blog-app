@@ -1,4 +1,4 @@
-package com.example.blogapp;
+package com.example.blogapp.utils;
 
 public class AppConstants {
     public static final String DEFAULT_PAGE_NO = "0";
