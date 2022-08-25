@@ -16,16 +16,18 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import static com.example.blogapp.config.ApplicationUserRoles.ADMIN;
 import static com.example.blogapp.config.ApplicationUserRoles.USER;
 
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoders;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public SecurityConfig(PasswordEncoder passwordEncoders) {
+        this.passwordEncoders = passwordEncoders;
     }
 
     @Override
@@ -55,14 +57,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Var of type UserDetails is used because the object stored of type User implements UserDetails interface.
         UserDetails user = User.builder()
                 .username("Hrishi")
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoders.encode("password"))
                 .roles(USER.name())
 //                .authorities(USER.getGrantedAuthorities())
                 .build();
 
         UserDetails admin = User.builder()
                 .username("Administrator")
-                .password(passwordEncoder.encode("admin@123"))
+                .password(passwordEncoders.encode("admin@123"))
                 .roles(ADMIN.name())
                 .authorities(ADMIN.getGrantedAuthorities())
                 .build();
