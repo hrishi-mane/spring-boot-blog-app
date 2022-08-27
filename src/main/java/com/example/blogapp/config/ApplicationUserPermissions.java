@@ -1,7 +1,7 @@
 package com.example.blogapp.config;
 
 public enum ApplicationUserPermissions {
-    //This is a master branch comment.
+    //This is a feature 2 branch comment.
     BLOG_READ("blog:read"),
     BLOG_WRITE("blog:write"),
     BLOG_UPDATE("blog:update"),
