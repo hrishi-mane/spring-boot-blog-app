@@ -1,10 +1,7 @@
 package com.example.blogapp.config;
 
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Set;
-
 public enum ApplicationUserPermissions {
+    //This is something that I am doing, and it can be done to make code better.
     BLOG_READ("blog:read"),
     BLOG_WRITE("blog:write"),
     BLOG_UPDATE("blog:update"),
