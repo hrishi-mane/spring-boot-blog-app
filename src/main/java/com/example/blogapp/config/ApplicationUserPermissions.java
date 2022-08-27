@@ -1,7 +1,7 @@
 package com.example.blogapp.config;
 
 public enum ApplicationUserPermissions {
-    //This is something that I am doing, and it can be done to make code better.
+    //This is a master branch comment.
     BLOG_READ("blog:read"),
     BLOG_WRITE("blog:write"),
     BLOG_UPDATE("blog:update"),
