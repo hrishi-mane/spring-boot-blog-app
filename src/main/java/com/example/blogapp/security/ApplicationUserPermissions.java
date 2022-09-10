@@ -1,4 +1,4 @@
-package com.example.blogapp.config;
+package com.example.blogapp.security;
 
 public enum ApplicationUserPermissions {
     //This is something that I am doing, and it can be done to make code better.

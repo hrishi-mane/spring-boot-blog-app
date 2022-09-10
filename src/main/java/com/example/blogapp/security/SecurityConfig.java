@@ -1,4 +1,4 @@
-package com.example.blogapp.config;
+package com.example.blogapp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static com.example.blogapp.config.ApplicationUserRoles.ADMIN;
-import static com.example.blogapp.config.ApplicationUserRoles.USER;
+import static com.example.blogapp.security.ApplicationUserRoles.ADMIN;
+import static com.example.blogapp.security.ApplicationUserRoles.USER;
 
 
 
