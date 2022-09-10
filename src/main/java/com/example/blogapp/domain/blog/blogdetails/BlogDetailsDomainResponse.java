@@ -1,12 +1,12 @@
-package com.example.blogapp.payload;
+package com.example.blogapp.domain.blog.blogdetails;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class Response {
-    private List<BlogDto> blogdtos;
+public class BlogDetailsDomainResponse {
+    private List<Blog> blogs;
     private int pageNo;
     private int totalElements;
     private int totalPages;

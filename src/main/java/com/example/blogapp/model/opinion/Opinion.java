@@ -1,4 +1,4 @@
-package com.example.blogapp.payload;
+package com.example.blogapp.model.opinion;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OpinionDto {
+public class Opinion {
     private int id;
     private String name;
     private String email;

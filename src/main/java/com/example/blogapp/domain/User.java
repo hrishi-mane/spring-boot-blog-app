@@ -1,6 +1,10 @@
-package com.example.blogapp.entity;
+package com.example.blogapp.domain;
 
-import lombok.*;
+import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,7 +37,7 @@ public class User {
             CascadeType.REFRESH,
             CascadeType.REMOVE})
 
-    private Set<Blog> blogs = new HashSet<>();
+    private Set<BlogCreateDomain> blogs = new HashSet<>();
 
 
 }

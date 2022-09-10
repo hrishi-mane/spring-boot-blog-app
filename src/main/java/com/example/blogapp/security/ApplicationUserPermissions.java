@@ -1,4 +1,4 @@
-package com.example.blogapp.config;
+package com.example.blogapp.security;
 
 public enum ApplicationUserPermissions {
     //This is a feature 2 branch comment.

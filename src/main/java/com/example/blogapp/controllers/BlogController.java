@@ -1,12 +1,11 @@
 package com.example.blogapp.controllers;
 
-import com.example.blogapp.payload.BlogDto;
-import com.example.blogapp.payload.Response;
-import com.example.blogapp.service.BlogService;
+import com.example.blogapp.model.blog.blogcreate.BlogCreate;
+import com.example.blogapp.model.blog.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.service.BlogPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.blogapp.utils.AppConstants.*;
@@ -14,48 +13,48 @@ import static com.example.blogapp.utils.AppConstants.*;
 @RestController
 @RequestMapping("/blogs")
 public class BlogController {
-    BlogService blogService;
+    BlogPort blogPort;
 
     @Autowired
-    public BlogController(BlogService blogService) {
-        this.blogService = blogService;
+    public BlogController(BlogPort blogPort) {
+        this.blogPort = blogPort;
     }
 
     @PostMapping
-//    @PreAuthorize("hasAuthority('blog:update')")
-    public ResponseEntity<BlogDto> saveBlog(@RequestBody BlogDto blogDto) {
-        BlogDto responseBlogDto = blogService.createBlog(blogDto);
-        return new ResponseEntity<>(responseBlogDto, HttpStatus.CREATED);
+//    @PreAuthorize("hasAuthority('blogCreate:update')")
+    public ResponseEntity<BlogCreate> saveBlog(@RequestBody BlogCreate blogCreate) {
+        BlogCreate responseBlogCreate = blogPort.createBlog(blogCreate);
+        return new ResponseEntity<>(responseBlogCreate, HttpStatus.CREATED);
     }
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    ResponseEntity<Response> getBlogs(@RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NO, required = false) int pageNo,
-                                      @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize,
-                                      @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) String sortBy,
-                                      @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-        Response response = blogService.getBlogs(pageNo, pageSize, sortBy, sortDir);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    ResponseEntity<BlogDetailsResponse> getBlogs(@RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NO, required = false) int pageNo,
+                                                 @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                 @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) String sortBy,
+                                                 @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
+        BlogDetailsResponse blogDetailsResponse = blogPort.getBlogs(pageNo, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(blogDetailsResponse, HttpStatus.OK);
     }
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("{id}")
-    ResponseEntity<BlogDto> getBlogById(@PathVariable int id) {
-        return new ResponseEntity<>(blogService.getBlogById(id), HttpStatus.OK);
+    ResponseEntity<BlogCreate> getBlogById(@PathVariable int id) {
+        return new ResponseEntity<>(blogPort.getBlogById(id), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-//    @PreAuthorize("hasAuthority('blog:update')")
-    ResponseEntity<BlogDto> updateBlog(@PathVariable int id, @RequestBody BlogDto blogDto) {
-        return new ResponseEntity<>(blogService.updateBlog(id, blogDto), HttpStatus.OK);
+//    @PreAuthorize("hasAuthority('blogCreate:update')")
+    ResponseEntity<BlogCreate> updateBlog(@PathVariable int id, @RequestBody BlogCreate blogCreate) {
+        return new ResponseEntity<>(blogPort.updateBlog(id, blogCreate), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
 //    @PreAuthorize("hasAuthority('blog:delete')")
     ResponseEntity<String> deleteBlog(@PathVariable int id) {
-        blogService.deleteBlog(id);
+        blogPort.deleteBlog(id);
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
     }
 

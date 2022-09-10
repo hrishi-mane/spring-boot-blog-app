@@ -1,4 +1,4 @@
-package com.example.blogapp.config;
+package com.example.blogapp.security;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.example.blogapp.config.ApplicationUserPermissions.*;
+import static com.example.blogapp.security.ApplicationUserPermissions.*;
 
 public enum ApplicationUserRoles {
     USER(Sets.newHashSet(BLOG_READ.name())),

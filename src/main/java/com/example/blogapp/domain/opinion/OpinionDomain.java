@@ -1,6 +1,10 @@
-package com.example.blogapp.entity;
+package com.example.blogapp.domain.opinion;
 
-import lombok.*;
+import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,7 +15,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "opinions")
-public class Opinion {
+public class OpinionDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -27,7 +31,7 @@ public class Opinion {
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Blog blog;
+    private BlogCreateDomain blog;
 
 
 }
