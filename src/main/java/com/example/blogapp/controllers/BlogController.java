@@ -1,7 +1,7 @@
 package com.example.blogapp.controllers;
 
-import com.example.blogapp.model.blog.blogcreate.BlogCreate;
-import com.example.blogapp.model.blog.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.model.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
 import com.example.blogapp.service.BlogPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

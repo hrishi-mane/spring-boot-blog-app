@@ -1,10 +1,14 @@
 package com.example.blogapp.service;
 
+import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
 import com.example.blogapp.mapper.BlogAppObjectMapper;
-import com.example.blogapp.model.blog.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogcreate.BlogCreate;
 import com.example.blogapp.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class BlogCreateService implements BlogCreatePort {
 
     private final BlogRepository blogRepository;
@@ -18,6 +22,8 @@ public class BlogCreateService implements BlogCreatePort {
 
     @Override
     public BlogCreate createBlog(BlogCreate blogCreate) {
+        BlogCreateDomain blogCreateDomain = blogAppObjectMapper.convertBlogCreateToBlogCreateDomain(blogCreate);
+        BlogCreateDomain response = blogRepository.save(blogCreateDomain);
         return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.blogapp.model.blog.blogdetails;
+package com.example.blogapp.model.blogdetails;
 
 import com.example.blogapp.model.opinion.Opinion;
 import lombok.Getter;

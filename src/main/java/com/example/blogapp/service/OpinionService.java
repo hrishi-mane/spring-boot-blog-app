@@ -9,7 +9,6 @@ import com.example.blogapp.repository.BlogRepository;
 import com.example.blogapp.repository.OpinionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,7 +78,7 @@ public class OpinionService implements OpinionPort {
                 new ResourceNotFound("opinion", "id", opinion_id));
 
         if (opinion.getBlog().getId() != blog.getId()) {
-            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment with given id not found");
+            throw new BlogApiException("Comment with given id not found");
         }
         return opinion;
     }

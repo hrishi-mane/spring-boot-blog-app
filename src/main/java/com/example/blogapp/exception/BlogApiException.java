@@ -1,19 +1,27 @@
 package com.example.blogapp.exception;
 
-import org.springframework.http.HttpStatus;
-
 public class BlogApiException extends RuntimeException {
-    private final HttpStatus httpStatus;
+    private Exception exception;
     private final String message;
 
-    public BlogApiException(HttpStatus httpStatus, String message){
+    public BlogApiException(Exception exception, String message) {
         super(message);
-        this.httpStatus = httpStatus;
+        this.exception = exception;
         this.message = message;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    public BlogApiException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 
 

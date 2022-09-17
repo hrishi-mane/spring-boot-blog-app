@@ -2,9 +2,9 @@ package com.example.blogapp.service;
 
 import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
 import com.example.blogapp.exception.ResourceNotFound;
-import com.example.blogapp.model.blog.blogcreate.BlogCreate;
-import com.example.blogapp.model.blog.blogdetails.Blog;
-import com.example.blogapp.model.blog.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.model.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogdetails.Blog;
+import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
 import com.example.blogapp.repository.BlogRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

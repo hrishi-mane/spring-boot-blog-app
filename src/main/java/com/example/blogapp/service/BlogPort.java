@@ -1,7 +1,7 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.model.blog.blogcreate.BlogCreate;
-import com.example.blogapp.model.blog.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.model.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
 
 public interface BlogPort {
     BlogCreate createBlog(BlogCreate blogCreate);

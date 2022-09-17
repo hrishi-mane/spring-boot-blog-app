@@ -1,4 +1,4 @@
-package com.example.blogapp.model.blog.blogcreate;
+package com.example.blogapp.model.blogcreate;
 
 import com.example.blogapp.model.opinion.Opinion;
 import com.fasterxml.jackson.annotation.JsonInclude;
