@@ -1,36 +1,28 @@
 package com.example.blogapp.model.blogcreate;
 
-import com.example.blogapp.model.opinion.Opinion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import java.sql.Timestamp;
-import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BlogCreate {
-    @JsonProperty("id")
-    private int id;
 
+    @NotNull(message = "The title cannot be null")
+    @NotEmpty(message = "The title cannot be empty")
     @JsonProperty("title")
     private String title;
 
+    @NotNull(message = "The content cannot be null")
+    @NotEmpty(message = "The content cannot be empty")
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("published_date")
-    private Timestamp publishedDate = new Timestamp(System.currentTimeMillis());
 
-    @JsonProperty("status")
-    private String status;
+    private String publishedDate;
 
-    @JsonProperty("opinions")
-    private Set<Opinion> opinions;
 
 }

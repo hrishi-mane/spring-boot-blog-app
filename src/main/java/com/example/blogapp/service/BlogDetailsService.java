@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @Service
-public class BlogDetailsService {
+public class BlogDetailsService implements BlogDetailsPort {
 
     private final BlogRepository blogRepository;
     private final BlogAppObjectMapper blogAppObjectMapper;
@@ -30,7 +30,7 @@ public class BlogDetailsService {
         this.blogAppObjectMapper = blogAppObjectMapper;
     }
 
-
+    @Override
     public BlogDetailsResponse getBlogs(int pageNo, int pageSize, String sortBy, String sortDir) {
         try {
             Page<BlogCreateDomain> blogPage;
