@@ -1,6 +1,6 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import com.example.blogapp.domain.blog.blogcreate.Blog;
 import com.example.blogapp.domain.opinion.OpinionDomain;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.exception.ResourceNotFound;
@@ -30,7 +30,7 @@ public class OpinionService implements OpinionPort {
 
     @Override
     public Opinion createOpinion(int blog_id, Opinion opinionDto) {
-        BlogCreateDomain blog = blogRepository.findById(blog_id).orElseThrow(() -> new ResourceNotFound("BlogCreate", "id", blog_id));
+        Blog blog = blogRepository.findById(blog_id).orElseThrow(() -> new ResourceNotFound("BlogCreate", "id", blog_id));
         OpinionDomain opinion = modelMapper.map(opinionDto, OpinionDomain.class);
         opinion.setBlog(blog);
         OpinionDomain response = opinionRepository.save(opinion);
@@ -72,7 +72,7 @@ public class OpinionService implements OpinionPort {
     }
 
     private OpinionDomain retrieveOpinion(int blog_id, int opinion_id) {
-        BlogCreateDomain blog = blogRepository.findById(blog_id).orElseThrow(() ->
+        Blog blog = blogRepository.findById(blog_id).orElseThrow(() ->
                 new ResourceNotFound("BlogCreate", "id", blog_id));
         OpinionDomain opinion = opinionRepository.findById(opinion_id).orElseThrow(() ->
                 new ResourceNotFound("opinion", "id", opinion_id));

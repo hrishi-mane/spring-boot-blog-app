@@ -21,8 +21,4 @@ public class BlogCreate {
     @JsonProperty("content")
     private String content;
 
-
-    private String publishedDate;
-
-
 }

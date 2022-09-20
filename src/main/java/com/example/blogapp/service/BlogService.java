@@ -1,10 +1,10 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import com.example.blogapp.domain.blog.blogcreate.Blog;
 import com.example.blogapp.exception.ResourceNotFound;
 import com.example.blogapp.model.blogcreate.BlogCreate;
-import com.example.blogapp.model.blogdetails.Blog;
 import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.model.blogdetails.BlogResponse;
 import com.example.blogapp.repository.BlogRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class BlogService implements BlogPort {
 
     @Override
     public BlogCreate createBlog(BlogCreate blogCreate) {
-        BlogCreateDomain blogCreateDomain = modelMapper.map(blogCreate, BlogCreateDomain.class);
-        BlogCreateDomain response = blogRepository.save(blogCreateDomain);
+        Blog blog = modelMapper.map(blogCreate, Blog.class);
+        Blog response = blogRepository.save(blog);
 
         return modelMapper.map(response, BlogCreate.class);
     }
@@ -43,44 +43,44 @@ public class BlogService implements BlogPort {
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<BlogCreateDomain> blogPage = blogRepository.findAll(pageable);
+        Page<Blog> blogPage = blogRepository.findAll(pageable);
 
 
-        List<Blog> blogs = blogPage.getContent().stream().
-                map(blog -> modelMapper.map(blog, Blog.class)).toList();
+        List<BlogResponse> blogResponses = blogPage.getContent().stream().
+                map(blog -> modelMapper.map(blog, BlogResponse.class)).toList();
 
-        return toResponseObject(blogPage, blogs);
+        return toResponseObject(blogPage, blogResponses);
     }
 
 
     @Override
     public BlogCreate getBlogById(int id) {
-        BlogCreateDomain blog = blogRepository.findById(id).orElseThrow(() ->
+        Blog blog = blogRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFound("BlogCreate", "id", id));
         return modelMapper.map(blog, BlogCreate.class);
     }
 
     @Override
     public BlogCreate updateBlog(int id, BlogCreate blogCreateDto) {
-        BlogCreateDomain blog = blogRepository.findById(id).orElseThrow(() ->
+        Blog blog = blogRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFound("BlogCreate", "id", id));
         blog.setTitle(blogCreateDto.getTitle());
         blog.setContent(blogCreateDto.getContent());
-        BlogCreateDomain response = blogRepository.save(blog);
+        Blog response = blogRepository.save(blog);
 
         return modelMapper.map(response, BlogCreate.class);
     }
 
     @Override
     public void deleteBlog(int id) {
-        BlogCreateDomain blog = blogRepository.findById(id).orElseThrow(() ->
+        Blog blog = blogRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFound("BlogCreate", "id", id));
         blogRepository.delete(blog);
     }
 
-    private BlogDetailsResponse toResponseObject(Page<BlogCreateDomain> blogPage, List<Blog> blogs) {
+    private BlogDetailsResponse toResponseObject(Page<Blog> blogPage, List<BlogResponse> blogResponses) {
         BlogDetailsResponse blogDetailsResponse = new BlogDetailsResponse();
-        blogDetailsResponse.setBlogs(blogs);
+        blogDetailsResponse.setBlogResponses(blogResponses);
         blogDetailsResponse.setPageNo(blogPage.getNumber());
         blogDetailsResponse.setTotalPages(blogPage.getTotalPages());
         blogDetailsResponse.setTotalElements(blogPage.getNumberOfElements());

@@ -1,13 +1,13 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import com.example.blogapp.domain.blog.blogcreate.Blog;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.mapper.BlogAppObjectMapper;
 import com.example.blogapp.model.ResultStatus;
-import com.example.blogapp.model.blogdetails.Blog;
 import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
+import com.example.blogapp.model.blogdetails.BlogResponse;
 import com.example.blogapp.repository.BlogRepository;
-import com.mysql.cj.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class BlogDetailsService implements BlogDetailsPort {
 
@@ -33,33 +34,29 @@ public class BlogDetailsService implements BlogDetailsPort {
     @Override
     public BlogDetailsResponse getBlogs(int pageNo, int pageSize, String sortBy, String sortDir) {
         try {
-            Page<BlogCreateDomain> blogPage;
-            List<Blog> blogs;
-            if (pageNo == 0 || pageSize == 0 || StringUtils.isNullOrEmpty(sortBy) || StringUtils.isNullOrEmpty(sortDir)) {
-                Sort sort = sortDir.equalsIgnoreCase("asc") ?
-                        Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-                Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-                blogPage = blogRepository.findAll(pageable);
+            Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() :
+                    Sort.by(sortBy).descending();
+
+            Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+            Page<Blog> blogPage = blogRepository.findAll(pageable);
 
 
-                blogs = blogPage.getContent().stream().
-                        map(blogAppObjectMapper::convertsBlogPageToBlog).toList();
-            } else {
-                throw new BlogApiException("PageNo, PageSize, SortBy and SortDir are compulsory");
-            }
+            List<BlogResponse> blogResponses = blogPage.getContent().stream().
+                    map(blogAppObjectMapper::convertsBlogPageToBlog).toList();
 
-            return makeResponse(blogs, blogPage);
+            return makeResponse(blogResponses, blogPage);
         } catch (Exception exp) {
+            log.info(String.format(getClass() + " " + "getBlogs" + " " + Arrays.toString(exp.getStackTrace())));
             throw new BlogApiException(exp.getMessage());
         }
     }
 
-    private BlogDetailsResponse makeResponse(List<Blog> blogs, Page<BlogCreateDomain> blogPage) {
+    private BlogDetailsResponse makeResponse(List<BlogResponse> blogResponses, Page<Blog> blogPage) {
         BlogDetailsResponse blogDetailsResponse = new BlogDetailsResponse();
-        blogDetailsResponse.setBlogs(blogs);
+        blogDetailsResponse.setBlogResponses(blogResponses);
         blogDetailsResponse.setTotalPages(blogPage.getTotalPages());
-        blogDetailsResponse.setTotalElements(blogs.size());
+        blogDetailsResponse.setTotalElements(blogResponses.size());
         blogDetailsResponse.setPageNo(blogPage.getNumber());
         blogDetailsResponse.setLast(blogPage.isLast());
 
