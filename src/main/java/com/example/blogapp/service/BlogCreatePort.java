@@ -1,8 +1,8 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.model.ResultStatus;
 import com.example.blogapp.model.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogcreate.BlogCreateResponse;
 
 public interface BlogCreatePort {
-    ResultStatus createBlog(BlogCreate blogCreate);
+    BlogCreateResponse createBlog(BlogCreate blogCreate);
 }

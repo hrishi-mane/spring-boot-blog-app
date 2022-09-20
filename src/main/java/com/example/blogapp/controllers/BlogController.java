@@ -1,43 +1,44 @@
 package com.example.blogapp.controllers;
 
-import com.example.blogapp.model.ResultStatus;
 import com.example.blogapp.model.blogcreate.BlogCreate;
+import com.example.blogapp.model.blogcreate.BlogCreateResponse;
+import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
 import com.example.blogapp.service.BlogCreatePort;
+import com.example.blogapp.service.BlogDetailsPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.example.blogapp.utils.AppConstants.*;
+
 @RestController
-@RequestMapping("/blogs")
 public class BlogController {
     BlogCreatePort blogCreatePort;
+    BlogDetailsPort blogDetailsPort;
 
     @Autowired
-    public BlogController(BlogCreatePort blogCreatePort) {
+    public BlogController(BlogCreatePort blogCreatePort, BlogDetailsPort blogDetailsPort) {
         this.blogCreatePort = blogCreatePort;
+        this.blogDetailsPort = blogDetailsPort;
     }
 
-    @PostMapping
-    public ResponseEntity<ResultStatus> createBlog(@Valid @RequestBody BlogCreate blogCreate) {
+    @PostMapping("/create-blog")
+    public ResponseEntity<BlogCreateResponse> createBlog(@Valid @RequestBody BlogCreate blogCreate) {
         return new ResponseEntity<>(blogCreatePort.createBlog(blogCreate), HttpStatus.OK);
     }
 
 
-//    //    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping
-//    ResponseEntity<BlogDetailsResponse> getBlogs(@RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NO, required = false) int pageNo,
-//                                                 @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize,
-//                                                 @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) String sortBy,
-//                                                 @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
-//        BlogDetailsResponse blogDetailsResponse = blogPort.getBlogs(pageNo, pageSize, sortBy, sortDir);
-//        return new ResponseEntity<>(blogDetailsResponse, HttpStatus.OK);
-//    }
+    @GetMapping("/get-blogs")
+    ResponseEntity<BlogDetailsResponse> getBlogs(@RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NO, required = false) int pageNo,
+                                                 @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                 @RequestParam(value = "sortBy", defaultValue = DEFAULT_SORT_BY, required = false) String sortBy,
+                                                 @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
+        BlogDetailsResponse blogDetailsResponse = blogDetailsPort.getBlogs(pageNo, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(blogDetailsResponse, HttpStatus.OK);
+    }
 
 
 //    //    @PreAuthorize("hasRole('ADMIN')")

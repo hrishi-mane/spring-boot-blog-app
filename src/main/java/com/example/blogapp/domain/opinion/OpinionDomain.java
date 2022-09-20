@@ -1,6 +1,6 @@
 package com.example.blogapp.domain.opinion;
 
-import com.example.blogapp.domain.blog.blogcreate.BlogCreateDomain;
+import com.example.blogapp.domain.blog.blogcreate.Blog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class OpinionDomain {
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private BlogCreateDomain blog;
+    private Blog blog;
 
 
 }
