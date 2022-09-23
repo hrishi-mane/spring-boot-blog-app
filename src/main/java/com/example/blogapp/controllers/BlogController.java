@@ -18,7 +18,7 @@ import static com.example.blogapp.utils.AppConstants.*;
 public class BlogController {
     BlogCreatePort blogCreatePort;
     BlogDetailsPort blogDetailsPort;
-    //update
+
     @Autowired
     public BlogController(BlogCreatePort blogCreatePort, BlogDetailsPort blogDetailsPort) {
         this.blogCreatePort = blogCreatePort;
