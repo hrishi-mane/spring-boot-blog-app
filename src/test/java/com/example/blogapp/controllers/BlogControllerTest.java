@@ -7,6 +7,7 @@ import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
 import com.example.blogapp.service.BlogCreatePort;
 import com.example.blogapp.service.BlogDetailsPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,21 @@ class BlogControllerTest {
     @MockBean
     private BlogCreatePort blogCreatePort;
 
+    private ResultStatus resultStatus;
+
+    @BeforeEach
+    void beforeEach() {
+        resultStatus = new ResultStatus();
+        resultStatus.setMessage("Not all who wander are lost");
+        resultStatus.setStatus("Status");
+        resultStatus.setStatusCode("Status Code");
+    }
+
     /**
      * Method under test: {@link BlogController#createBlog(BlogCreate)}
      */
     @Test
     void testCreateBlog() throws Exception {
-        ResultStatus resultStatus = new ResultStatus();
-        resultStatus.setMessage("Not all who wander are lost");
-        resultStatus.setStatus("Status");
-        resultStatus.setStatusCode("Status Code");
-
         BlogCreateResponse blogCreateResponse = new BlogCreateResponse();
         blogCreateResponse.setResultStatus(resultStatus);
         when(blogCreatePort.createBlog(any())).thenReturn(blogCreateResponse);
@@ -72,11 +78,6 @@ class BlogControllerTest {
      */
     @Test
     void testGetBlogs() throws Exception {
-        ResultStatus resultStatus = new ResultStatus();
-        resultStatus.setMessage("Not all who wander are lost");
-        resultStatus.setStatus("Status");
-        resultStatus.setStatusCode("Status Code");
-
         BlogDetailsResponse blogDetailsResponse = new BlogDetailsResponse();
         blogDetailsResponse.setBlogResponses(new ArrayList<>());
         blogDetailsResponse.setLast(true);
@@ -86,7 +87,7 @@ class BlogControllerTest {
         blogDetailsResponse.setTotalPages(1);
         when(blogDetailsPort.getBlogs(anyInt(), anyInt(), any(), any()))
                 .thenReturn(blogDetailsResponse);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/get-blogs");
         MockMvcBuilders.standaloneSetup(blogController)
                 .build()
                 .perform(requestBuilder)
@@ -97,5 +98,6 @@ class BlogControllerTest {
                                 "{\"blogResponses\":[],\"pageNo\":1,\"totalElements\":1,\"totalPages\":1,\"resultStatus\":{\"statusCode\":\"Status"
                                         + " Code\",\"status\":\"Status\",\"message\":\"Not all who wander are lost\"},\"last\":true}"));
     }
+
 }
 
