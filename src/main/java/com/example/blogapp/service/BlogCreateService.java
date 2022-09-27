@@ -1,5 +1,6 @@
 package com.example.blogapp.service;
 
+import com.example.blogapp.config.BlogAppMessageConfig;
 import com.example.blogapp.domain.blog.blogcreate.Blog;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.mapper.BlogAppObjectMapper;
@@ -20,10 +21,13 @@ public class BlogCreateService implements BlogCreatePort {
     private final BlogRepository blogRepository;
     private final BlogAppObjectMapper blogAppObjectMapper;
 
+    private final BlogAppMessageConfig blogAppMessageConfig;
+
     @Autowired
-    public BlogCreateService(BlogRepository blogRepository, BlogAppObjectMapper blogAppObjectMapper) {
+    public BlogCreateService(BlogRepository blogRepository, BlogAppObjectMapper blogAppObjectMapper, BlogAppMessageConfig blogAppMessageConfig) {
         this.blogRepository = blogRepository;
         this.blogAppObjectMapper = blogAppObjectMapper;
+        this.blogAppMessageConfig = blogAppMessageConfig;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class BlogCreateService implements BlogCreatePort {
             blog = blogAppObjectMapper.convertBlogCreateToBlogCreateDomain(blogCreate);
             Blog save = blogRepository.save(blog);
             if (save.getId() == 0) {
-                throw new BlogApiException("There was some issue creating blog, try again");
+                throw new BlogApiException(blogAppMessageConfig.getCreationIssue());
             }
 
         } catch (Exception e) {
@@ -48,7 +52,7 @@ public class BlogCreateService implements BlogCreatePort {
         ResultStatus resultStatus = new ResultStatus();
         resultStatus.setStatusCode("200");
         resultStatus.setStatus("Success");
-        resultStatus.setMessage("Blog created successfully");
+        resultStatus.setMessage(blogAppMessageConfig.getSuccessMessage());
 
         blogCreateResponse.setResultStatus(resultStatus);
         return blogCreateResponse;
