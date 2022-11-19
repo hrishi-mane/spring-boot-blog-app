@@ -7,11 +7,11 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ConfigurationProperties(prefix = "blogapp")
 @PropertySource("classpath:message.properties")
-public class BlogAppMessageConfig {
+public class BlogMessageConfig {
     private String creationIssue;
     private String successMessage;
 
-    public BlogAppMessageConfig() {
+    public BlogMessageConfig() {
         super();
     }
 

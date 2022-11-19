@@ -1,4 +1,4 @@
 package com.example.blogapp.service;
 
-public class BlogGetIdService {
+public interface BlogDelete {
 }

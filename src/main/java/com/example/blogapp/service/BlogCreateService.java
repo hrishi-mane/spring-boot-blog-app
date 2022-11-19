@@ -1,12 +1,12 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.config.BlogAppMessageConfig;
-import com.example.blogapp.domain.blog.blogcreate.Blog;
+import com.example.blogapp.config.BlogMessageConfig;
+import com.example.blogapp.domain.blog.BlogCreateDaoReq;
 import com.example.blogapp.exception.BlogApiException;
-import com.example.blogapp.mapper.BlogAppObjectMapper;
-import com.example.blogapp.model.ResultStatus;
-import com.example.blogapp.model.blogcreate.BlogCreate;
-import com.example.blogapp.model.blogcreate.BlogCreateResponse;
+import com.example.blogapp.mapper.BlogObjectMapper;
+import com.example.blogapp.model.blog.ResultStatus;
+import com.example.blogapp.model.blog.BlogCreate;
+import com.example.blogapp.model.blog.BlogCreateRes;
 import com.example.blogapp.repository.BlogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,45 +16,46 @@ import java.util.Arrays;
 
 @Slf4j
 @Service
-public class BlogCreateService implements BlogCreatePort {
+public class BlogCreateService implements com.example.blogapp.service.BlogCreate {
 
     private final BlogRepository blogRepository;
-    private final BlogAppObjectMapper blogAppObjectMapper;
+    private final BlogObjectMapper blogObjectMapper;
 
-    private final BlogAppMessageConfig blogAppMessageConfig;
+    private final BlogMessageConfig blogMessageConfig;
 
     @Autowired
-    public BlogCreateService(BlogRepository blogRepository, BlogAppObjectMapper blogAppObjectMapper, BlogAppMessageConfig blogAppMessageConfig) {
+    public BlogCreateService(BlogRepository blogRepository, BlogObjectMapper blogObjectMapper,
+                             BlogMessageConfig blogMessageConfig) {
         this.blogRepository = blogRepository;
-        this.blogAppObjectMapper = blogAppObjectMapper;
-        this.blogAppMessageConfig = blogAppMessageConfig;
+        this.blogObjectMapper = blogObjectMapper;
+        this.blogMessageConfig = blogMessageConfig;
     }
 
     @Override
-    public BlogCreateResponse createBlog(BlogCreate blogCreate) {
-        Blog blog;
+    public BlogCreateRes createBlog(BlogCreate blogCreate) {
+        BlogCreateDaoReq blogCreateDaoReq;
         try {
-            blog = blogAppObjectMapper.convertBlogCreateToBlogCreateDomain(blogCreate);
-            Blog save = blogRepository.save(blog);
+            blogCreateDaoReq = blogObjectMapper.convertBlogCreateToBlogCreateDomain(blogCreate);
+            blogCreateDaoReq.setPublishedDate(String.valueOf(System.currentTimeMillis()));
+            BlogCreateDaoReq save = blogRepository.save(blogCreateDaoReq);
             if (save.getId() == 0) {
-                throw new BlogApiException(blogAppMessageConfig.getCreationIssue());
+                throw new BlogApiException(blogMessageConfig.getCreationIssue());
             }
 
         } catch (Exception e) {
-            log.info(String.format(getClass() + " " + "createBlog" + Arrays.toString(e.getStackTrace())));
+            log.info(String.format("getClass()%s%s%s", " ", "createBlog", Arrays.toString(e.getStackTrace())));
             throw new BlogApiException(e.getMessage());
         }
         return makeResponse();
     }
 
-    private BlogCreateResponse makeResponse() {
-        BlogCreateResponse blogCreateResponse = new BlogCreateResponse();
+    private BlogCreateRes makeResponse() {
+        BlogCreateRes blogCreateRes = new BlogCreateRes();
         ResultStatus resultStatus = new ResultStatus();
-        resultStatus.setStatusCode("200");
         resultStatus.setStatus("Success");
-        resultStatus.setMessage(blogAppMessageConfig.getSuccessMessage());
+        resultStatus.setMessage(blogMessageConfig.getSuccessMessage());
 
-        blogCreateResponse.setResultStatus(resultStatus);
-        return blogCreateResponse;
+        blogCreateRes.setResultStatus(resultStatus);
+        return blogCreateRes;
     }
 }

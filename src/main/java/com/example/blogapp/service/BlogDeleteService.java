@@ -1,4 +1,4 @@
 package com.example.blogapp.service;
 
-public class BlogDeleteService implements BlogDeletePort {
+public class BlogDeleteService implements BlogDelete {
 }

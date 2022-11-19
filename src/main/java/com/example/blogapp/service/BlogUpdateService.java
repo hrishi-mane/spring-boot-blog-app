@@ -1,5 +1,5 @@
 package com.example.blogapp.service;
 
-public class BlogUpdateService implements BlogUpdatePort {
+public class BlogUpdateService implements BlogUpdate {
 
 }

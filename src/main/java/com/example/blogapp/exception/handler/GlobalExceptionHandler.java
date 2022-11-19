@@ -1,8 +1,8 @@
 package com.example.blogapp.exception.handler;
 
 import com.example.blogapp.exception.BlogApiException;
-import com.example.blogapp.model.ResultStatus;
-import com.example.blogapp.model.blogcreate.BlogCreateResponse;
+import com.example.blogapp.model.blog.ResultStatus;
+import com.example.blogapp.model.blog.BlogCreateRes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static BlogCreateResponse makeErrorResponse(String message) {
-        BlogCreateResponse blogCreateResponse = new BlogCreateResponse();
+    private static BlogCreateRes makeErrorResponse(String message) {
+        BlogCreateRes blogCreateRes = new BlogCreateRes();
         ResultStatus resultStatus = new ResultStatus();
         resultStatus.setMessage(message);
         resultStatus.setStatus("Failed");
         resultStatus.setStatusCode("ERR_404");
 
-        blogCreateResponse.setResultStatus(resultStatus);
-        return blogCreateResponse;
+        blogCreateRes.setResultStatus(resultStatus);
+        return blogCreateRes;
     }
 
     /**
@@ -30,10 +30,10 @@ public class GlobalExceptionHandler {
      * @return The error response containing custom error message based on what went wrong
      */
     @ExceptionHandler(BlogApiException.class)
-    public ResponseEntity<BlogCreateResponse> handleBlogApiException(BlogApiException exp) {
-        BlogCreateResponse blogCreateResponse = makeErrorResponse(exp.getMessage());
+    public ResponseEntity<BlogCreateRes> handleBlogApiException(BlogApiException exp) {
+        BlogCreateRes blogCreateRes = makeErrorResponse(exp.getMessage());
 
-        return new ResponseEntity<>(blogCreateResponse, HttpStatus.OK);
+        return new ResponseEntity<>(blogCreateRes, HttpStatus.OK);
     }
 
     /**
@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
      * @return The error response containing custom error message based on what went wrong
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<BlogCreateResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
-        BlogCreateResponse blogCreateResponse = makeErrorResponse(exp.getBindingResult().getFieldError().getDefaultMessage());
-        return new ResponseEntity<>(blogCreateResponse, HttpStatus.OK);
+    public ResponseEntity<BlogCreateRes> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
+        BlogCreateRes blogCreateRes = makeErrorResponse(exp.getBindingResult().getFieldError().getDefaultMessage());
+        return new ResponseEntity<>(blogCreateRes, HttpStatus.OK);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.blogapp.model.blogcreate;
+package com.example.blogapp.model.blog;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
