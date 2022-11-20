@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class BlogDetailsService implements BlogDetails {
+public class BlogListService implements BlogList {
 
     private final BlogRepository blogRepository;
     private final BlogObjectMapper blogObjectMapper;
 
     @Autowired
-    public BlogDetailsService(BlogRepository blogRepository, BlogObjectMapper blogObjectMapper) {
+    public BlogListService(BlogRepository blogRepository, BlogObjectMapper blogObjectMapper) {
         this.blogRepository = blogRepository;
         this.blogObjectMapper = blogObjectMapper;
     }

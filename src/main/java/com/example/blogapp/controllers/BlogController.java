@@ -3,7 +3,7 @@ package com.example.blogapp.controllers;
 import com.example.blogapp.model.blog.BlogCreate;
 import com.example.blogapp.model.blog.BlogCreateRes;
 import com.example.blogapp.model.blog.BlogListRes;
-import com.example.blogapp.service.BlogDetails;
+import com.example.blogapp.service.BlogList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +14,12 @@ import static com.example.blogapp.utils.AppConstants.*;
 @RestController
 public class BlogController {
     com.example.blogapp.service.BlogCreate blogCreateService;
-    BlogDetails blogDetailsService;
+    BlogList blogListService;
 
     @Autowired
-    public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogDetails blogDetailsService) {
+    public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogList blogListService) {
         this.blogCreateService = blogCreateService;
-        this.blogDetailsService = blogDetailsService;
+        this.blogListService = blogListService;
     }
 
     @PostMapping(value = "/create-blog", produces = "application/json")
@@ -38,7 +38,7 @@ public class BlogController {
                                                     required = false) String sortBy,
                          @RequestParam(value = "sortDir", defaultValue = DEFAULT_SORT_DIRECTION,
                                                     required = false) String sortDir) {
-        return blogDetailsService.getBlogs(pageNo, pageSize, sortBy, sortDir);
+        return blogListService.getBlogs(pageNo, pageSize, sortBy, sortDir);
     }
 
 }

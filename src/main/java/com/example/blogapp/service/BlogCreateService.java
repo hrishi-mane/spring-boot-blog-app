@@ -31,6 +31,9 @@ public class BlogCreateService implements com.example.blogapp.service.BlogCreate
         this.blogMessageConfig = blogMessageConfig;
     }
 
+    /**
+     * The method creates and saves a blog in the database using Jpa repository.
+     */
     @Override
     public BlogCreateRes createBlog(BlogCreate blogCreate) {
         BlogCreateDaoReq blogCreateDaoReq;
