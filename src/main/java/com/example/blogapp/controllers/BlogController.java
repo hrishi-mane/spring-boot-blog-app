@@ -1,31 +1,37 @@
 package com.example.blogapp.controllers;
 
-import com.example.blogapp.model.blog.BlogCreate;
-import com.example.blogapp.model.blog.BlogCreateRes;
-import com.example.blogapp.model.blog.BlogDeleteRes;
-import com.example.blogapp.model.blog.BlogListRes;
+import com.example.blogapp.model.blog.*;
 import com.example.blogapp.service.BlogDelete;
+import com.example.blogapp.service.BlogDetails;
 import com.example.blogapp.service.BlogList;
+import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import static com.example.blogapp.utils.AppConstants.*;
 
 @RestController
 public class BlogController {
+    public static final String EMPTY_ID_MESSAGE = "The id cannot be null/empty";
     com.example.blogapp.service.BlogCreate blogCreateService;
     BlogList blogListService;
 
     BlogDelete blogDeleteService;
 
+    BlogDetails blogDetailsService;
+
     @Autowired
     public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogList blogListService,
-                          BlogDelete blogDeleteService) {
+                          BlogDelete blogDeleteService, BlogDetails blogDetailsService) {
         this.blogCreateService = blogCreateService;
         this.blogListService = blogListService;
         this.blogDeleteService = blogDeleteService;
+        this.blogDetailsService = blogDetailsService;
     }
 
     @PostMapping(value = "/create-blog", produces = "application/json")
@@ -52,6 +58,13 @@ public class BlogController {
     @ResponseBody
     BlogDeleteRes deleteBlog(@RequestParam(value = "blogId", required = true) int blogId) {
         return blogDeleteService.deleteBlog(blogId);
+    }
+
+    @GetMapping(value = "/get-blog-details", produces = "application/json")
+    @ResponseBody
+    BlogDetailRes getBlogDetails(@NotEmpty(message = EMPTY_ID_MESSAGE) @NotNull(message = EMPTY_ID_MESSAGE)
+                                 @RequestParam int id){
+        return blogDetailsService.getBlogDetails(id);
     }
 
 }

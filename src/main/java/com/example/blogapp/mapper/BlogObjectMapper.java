@@ -4,6 +4,8 @@ import com.example.blogapp.domain.blog.BlogCreateDaoReq;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.model.blog.BlogCreate;
 import com.example.blogapp.model.blog.Blog;
+import com.example.blogapp.model.blog.BlogDetailRes;
+import com.example.blogapp.model.blog.ResultStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,5 +54,25 @@ public class BlogObjectMapper {
             throw new BlogApiException(e, e.getMessage());
         }
         return blog;
+    }
+
+
+    public BlogDetailRes generateBlogDetailRes(BlogCreateDaoReq blogCreateDaoReq) {
+        BlogDetailRes blogDetailRes;
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            blogDetailRes = objectMapper.readValue(new Gson().toJson(blogCreateDaoReq), BlogDetailRes.class);
+            ResultStatus resultStatus = new ResultStatus();
+            resultStatus.setStatus("Success");
+            blogDetailRes.setResultStatus(resultStatus);
+        } catch (JsonProcessingException e) {
+            log.info(String.format("getClass()%s%s%s%s", " ", "generateBlogDetailRes", " ", Arrays.
+                    toString(e.getStackTrace())));
+
+            throw new BlogApiException(e, e.getMessage());
+        }
+
+        return blogDetailRes;
     }
 }
