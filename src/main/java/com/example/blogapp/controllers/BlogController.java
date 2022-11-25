@@ -4,9 +4,7 @@ import com.example.blogapp.model.blog.*;
 import com.example.blogapp.service.BlogDelete;
 import com.example.blogapp.service.BlogDetails;
 import com.example.blogapp.service.BlogList;
-import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,6 +63,11 @@ public class BlogController {
     BlogDetailRes getBlogDetails(@NotEmpty(message = EMPTY_ID_MESSAGE) @NotNull(message = EMPTY_ID_MESSAGE)
                                  @RequestParam int id){
         return blogDetailsService.getBlogDetails(id);
+    }
+
+    @GetMapping(value = "/update-blog", produces = "application/json")
+    void updateBlog(@RequestParam int id){
+
     }
 
 }
