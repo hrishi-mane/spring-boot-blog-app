@@ -1,6 +1,6 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.BlogCreateDaoReq;
+import com.example.blogapp.domain.blog.BlogDao;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.mapper.BlogObjectMapper;
 import com.example.blogapp.model.blog.BlogDetailRes;
@@ -26,9 +26,9 @@ public class BlogDetailsService implements BlogDetails {
     @Override
     public BlogDetailRes getBlogDetails(int blogId) {
         try {
-            BlogCreateDaoReq blogCreateDaoReq = blogRepository.findById(blogId).orElseThrow(() ->
+            BlogDao blogDao = blogRepository.findById(blogId).orElseThrow(() ->
                     new BlogApiException("Blog does not exist"));
-            return blogObjectMapper.generateBlogDetailRes(blogCreateDaoReq);
+            return blogObjectMapper.generateBlogDetailRes(blogDao);
 
         } catch (Exception exp) {
             log.info(String.format("getClass()%s%s%s%s", " ", "getBlogs", " ", Arrays.toString(exp.getStackTrace())));

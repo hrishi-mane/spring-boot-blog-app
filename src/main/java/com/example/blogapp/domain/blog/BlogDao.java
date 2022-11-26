@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "blog")
-public class BlogCreateDaoReq {
+public class BlogDao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

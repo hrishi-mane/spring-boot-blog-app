@@ -1,6 +1,6 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.BlogCreateDaoReq;
+import com.example.blogapp.domain.blog.BlogDao;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.mapper.BlogObjectMapper;
 import com.example.blogapp.model.blog.ResultStatus;
@@ -40,7 +40,7 @@ public class BlogListService implements BlogList {
                     Sort.by(sortBy).descending();
 
             Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-            Page<BlogCreateDaoReq> blogPage = blogRepository.findAll(pageable);
+            Page<BlogDao> blogPage = blogRepository.findAll(pageable);
 
 
             List<Blog> blogRespons = blogPage.getContent().stream().
@@ -53,7 +53,7 @@ public class BlogListService implements BlogList {
         }
     }
 
-    private BlogListRes makeResponse(List<Blog> blogRespons, Page<BlogCreateDaoReq> blogPage) {
+    private BlogListRes makeResponse(List<Blog> blogRespons, Page<BlogDao> blogPage) {
         BlogListRes blogListRes = new BlogListRes();
 
         ResultStatus resultStatus = new ResultStatus();
