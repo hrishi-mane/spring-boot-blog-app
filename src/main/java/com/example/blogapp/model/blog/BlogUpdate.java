@@ -8,7 +8,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class BlogCreate {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BlogUpdate {
+    @NotNull(message = "The id cannot be empty/null")
+    @NotEmpty(message = "The id cannot be empty/null")
+    @JsonProperty("id")
+    private int id;
 
     @NotNull(message = "The title cannot be empty/null")
     @NotEmpty(message = "The title cannot be empty/null")
@@ -19,5 +24,4 @@ public class BlogCreate {
     @NotEmpty(message = "The content cannot be empty/null")
     @JsonProperty("content")
     private String content;
-
 }

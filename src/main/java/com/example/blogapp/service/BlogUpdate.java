@@ -1,5 +1,7 @@
 package com.example.blogapp.service;
 
+import com.example.blogapp.model.blog.BlogUpdateRes;
+
 public interface BlogUpdate {
-    void updateBlog(int id);
+    BlogUpdateRes updateBlog(com.example.blogapp.model.blog.BlogUpdate blogUpdate);
 }

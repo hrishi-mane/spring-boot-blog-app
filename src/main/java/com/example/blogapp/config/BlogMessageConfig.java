@@ -15,6 +15,8 @@ public class BlogMessageConfig {
 
     private String deletionSuccessMessage;
 
+    private String incorrectObjectTypeMessage;
+
     public BlogMessageConfig() {
         super();
     }
@@ -49,5 +51,13 @@ public class BlogMessageConfig {
 
     public void setDeletionSuccessMessage(String deletionSuccessMessage) {
         this.deletionSuccessMessage = deletionSuccessMessage;
+    }
+
+    public String getIncorrectObjectTypeMessage() {
+        return incorrectObjectTypeMessage;
+    }
+
+    public void setIncorrectObjectTypeMessage(String incorrectObjectTypeMessage) {
+        this.incorrectObjectTypeMessage = incorrectObjectTypeMessage;
     }
 }

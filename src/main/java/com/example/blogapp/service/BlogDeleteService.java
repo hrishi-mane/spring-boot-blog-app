@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+/**
+ * Class for deleting the blog from the database.
+ */
 @Service
 @Slf4j
 public class BlogDeleteService implements BlogDelete {
@@ -38,6 +41,8 @@ public class BlogDeleteService implements BlogDelete {
                 blogRepository.deleteById(id);
             }
             else{
+                log.info(String.format("getClass()%s%s%s", " ", "deleteBlog", blogMessageConfig.
+                        getInvalidBlogIdMessage()));
                 throw new BlogApiException(blogMessageConfig.getInvalidBlogIdMessage());
             }
         } catch (Exception e){

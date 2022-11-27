@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+/**
+ * Class for saving the blog to the database.
+ */
 @Slf4j
 @Service
 public class BlogCreateService implements com.example.blogapp.service.BlogCreate {

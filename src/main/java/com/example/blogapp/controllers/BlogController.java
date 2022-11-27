@@ -23,13 +23,17 @@ public class BlogController {
 
     BlogDetails blogDetailsService;
 
+    com.example.blogapp.service.BlogUpdate blogUpdateService;
+
     @Autowired
     public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogList blogListService,
-                          BlogDelete blogDeleteService, BlogDetails blogDetailsService) {
+                          BlogDelete blogDeleteService, BlogDetails blogDetailsService,
+                          com.example.blogapp.service.BlogUpdate blogUpdateService) {
         this.blogCreateService = blogCreateService;
         this.blogListService = blogListService;
         this.blogDeleteService = blogDeleteService;
         this.blogDetailsService = blogDetailsService;
+        this.blogUpdateService = blogUpdateService;
     }
 
     @PostMapping(value = "/create-blog", produces = "application/json")
@@ -65,9 +69,9 @@ public class BlogController {
         return blogDetailsService.getBlogDetails(id);
     }
 
-    @GetMapping(value = "/update-blog", produces = "application/json")
-    void updateBlog(@RequestParam int id){
-
+    @PutMapping(value = "/update-blog", produces = "application/json")
+    BlogUpdateRes updateBlog(@RequestBody BlogUpdate blogUpdate){
+        return blogUpdateService.updateBlog(blogUpdate);
     }
 
 }
