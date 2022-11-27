@@ -1,4 +1,4 @@
-package com.example.blogapp.domain.blog.blogcreate;
+package com.example.blogapp.domain.blog;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "blog")
-public class Blog {
+public class BlogDao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

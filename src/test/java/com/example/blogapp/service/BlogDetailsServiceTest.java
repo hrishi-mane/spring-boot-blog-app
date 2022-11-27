@@ -1,89 +1,108 @@
 package com.example.blogapp.service;
 
-import com.example.blogapp.domain.blog.blogcreate.Blog;
-import com.example.blogapp.exception.BlogApiException;
-import com.example.blogapp.mapper.BlogAppObjectMapper;
-import com.example.blogapp.model.ResultStatus;
-import com.example.blogapp.model.blogdetails.BlogDetailsResponse;
-import com.example.blogapp.repository.BlogRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {BlogDetailsService.class})
-@ExtendWith(SpringExtension.class)
-class BlogDetailsServiceTest {
-    @MockBean
-    private BlogAppObjectMapper blogAppObjectMapper;
+import com.example.blogapp.domain.blog.BlogDao;
+import com.example.blogapp.exception.BlogApiException;
+import com.example.blogapp.mapper.BlogObjectMapper;
+import com.example.blogapp.model.blog.BlogDetailRes;
+import com.example.blogapp.model.blog.ResultStatus;
+import com.example.blogapp.repository.BlogRepository;
 
+import java.util.Optional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {BlogDetailsService.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class BlogDetailsServiceTest {
     @Autowired
     private BlogDetailsService blogDetailsService;
+
+    @MockBean
+    private BlogObjectMapper blogObjectMapper;
 
     @MockBean
     private BlogRepository blogRepository;
 
     /**
-     * Method under test: {@link BlogDetailsService#getBlogs(int, int, String, String)}
+     * Method under test: {@link BlogDetailsService#getBlogDetails(int)}
      */
     @Test
-    void testGetBlogs() {
-        when(blogRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        BlogDetailsResponse actualBlogs = blogDetailsService.getBlogs(1, 3, "asc", "Sort Dir");
-        assertTrue(actualBlogs.getBlogResponses().isEmpty());
-        assertTrue(actualBlogs.isLast());
-        assertEquals(1, actualBlogs.getTotalPages());
-        assertEquals(0, actualBlogs.getTotalElements());
-        assertEquals(0, actualBlogs.getPageNo());
-        ResultStatus resultStatus = actualBlogs.getResultStatus();
-        assertEquals("200", resultStatus.getStatusCode());
-        assertEquals("Success", resultStatus.getStatus());
-    }
+    public void testGetBlogDetails() {
+        BlogDao blogDao = new BlogDao();
+        blogDao.setContent("Not all who wander are lost");
+        blogDao.setId(1);
+        blogDao.setPublishedDate("2020-03-01");
+        blogDao.setStatus("Status");
+        blogDao.setTitle("Dr");
+        Optional<BlogDao> ofResult = Optional.of(blogDao);
+        when(blogRepository.findById((Integer) any())).thenReturn(ofResult);
 
-    @Test
-    void testGetBlogs2() {
-        when(blogRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        BlogDetailsResponse actualBlogs = blogDetailsService.getBlogs(1, 3, "dsc", "Sort Dir");
-        assertTrue(actualBlogs.getBlogResponses().isEmpty());
-        assertTrue(actualBlogs.isLast());
-        assertEquals(1, actualBlogs.getTotalPages());
-        assertEquals(0, actualBlogs.getTotalElements());
-        assertEquals(0, actualBlogs.getPageNo());
-        ResultStatus resultStatus = actualBlogs.getResultStatus();
-        assertEquals("200", resultStatus.getStatusCode());
-        assertEquals("Success", resultStatus.getStatus());
+        ResultStatus resultStatus = new ResultStatus();
+        resultStatus.setMessage("Not all who wander are lost");
+        resultStatus.setStatus("Status");
+        resultStatus.setStatusCode("Status Code");
+
+        BlogDetailRes blogDetailRes = new BlogDetailRes();
+        blogDetailRes.setContent("Not all who wander are lost");
+        blogDetailRes.setId("42");
+        blogDetailRes.setPublishedDate("2020-03-01");
+        blogDetailRes.setResultStatus(resultStatus);
+        blogDetailRes.setStatus("Status");
+        blogDetailRes.setTitle("Dr");
+        when(blogObjectMapper.generateBlogDetailRes((BlogDao) any())).thenReturn(blogDetailRes);
+        assertSame(blogDetailRes, blogDetailsService.getBlogDetails(123));
     }
 
     /**
-     * Method under test: {@link BlogDetailsService#getBlogs(int, int, String, String)}
+     * Method under test: {@link BlogDetailsService#getBlogDetails(int)}
      */
     @Test
-    void testGetBlogsException() {
-        Blog blog = new Blog();
-        blog.setContent("Not all who wander are lost");
-        blog.setId(1);
-        blog.setPublishedDate("2020-03-01");
-        blog.setStatus("asc");
-        blog.setTitle("Dr");
-
-        ArrayList<Blog> blogList = new ArrayList<>();
-        blogList.add(blog);
-        PageImpl<Blog> pageImpl = new PageImpl<>(blogList);
-        when(blogRepository.findAll((Pageable) any())).thenReturn(pageImpl);
-        when(blogAppObjectMapper.convertsBlogPageToBlog(any()))
+    public void testGetBlogDetails2() {
+        BlogDao blogDao = new BlogDao();
+        blogDao.setContent("Not all who wander are lost");
+        blogDao.setId(1);
+        blogDao.setPublishedDate("2020-03-01");
+        blogDao.setStatus("Status");
+        blogDao.setTitle("Dr");
+        Optional<BlogDao> ofResult = Optional.of(blogDao);
+        when(blogRepository.findById((Integer) any())).thenReturn(ofResult);
+        when(blogObjectMapper.generateBlogDetailRes((BlogDao) any()))
                 .thenThrow(new BlogApiException("An error occurred"));
-        assertThrows(BlogApiException.class, () -> blogDetailsService.getBlogs(1, 3, "Sort By", "Sort Dir"));
+        assertThrows(BlogApiException.class, () -> blogDetailsService.getBlogDetails(123));
     }
 
+    /**
+     * Method under test: {@link BlogDetailsService#getBlogDetails(int)}
+     */
+    @Test
+    public void testGetBlogDetails3() {
+        when(blogRepository.findById((Integer) any())).thenReturn(Optional.empty());
+
+        ResultStatus resultStatus = new ResultStatus();
+        resultStatus.setMessage("Not all who wander are lost");
+        resultStatus.setStatus("Status");
+        resultStatus.setStatusCode("Status Code");
+
+        BlogDetailRes blogDetailRes = new BlogDetailRes();
+        blogDetailRes.setContent("Not all who wander are lost");
+        blogDetailRes.setId("42");
+        blogDetailRes.setPublishedDate("2020-03-01");
+        blogDetailRes.setResultStatus(resultStatus);
+        blogDetailRes.setStatus("Status");
+        blogDetailRes.setTitle("Dr");
+        when(blogObjectMapper.generateBlogDetailRes((BlogDao) any())).thenReturn(blogDetailRes);
+        assertThrows(BlogApiException.class, () -> blogDetailsService.getBlogDetails(123));
+    }
 }
 
