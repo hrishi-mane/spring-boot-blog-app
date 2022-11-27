@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
      * Exception Handler for data validation exception
      *
      * @param exp The exception class
-     * @return The error response containing custom error message based on what went wrong
+     * @return The error response containing custom error message based on what went wrong, testing
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResultStatus> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
