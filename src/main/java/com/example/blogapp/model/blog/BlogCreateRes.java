@@ -9,5 +9,5 @@ import lombok.Data;
 public class BlogCreateRes {
     @JsonProperty("id")
     int id;
-    ResultStatus resultStatus;
+    private ResultStatus resultStatus;
 }
