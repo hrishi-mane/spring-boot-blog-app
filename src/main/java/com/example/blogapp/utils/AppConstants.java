@@ -1,6 +1,9 @@
 package com.example.blogapp.utils;
 
-public class AppConstants {
+public final class AppConstants {
+    private AppConstants(){
+        super();
+    }
     public static final String DEFAULT_PAGE_NO = "0";
     public static final String DEFAULT_PAGE_SIZE = "10";
     public static final String DEFAULT_SORT_BY = "id";
