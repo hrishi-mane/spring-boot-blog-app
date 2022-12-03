@@ -4,6 +4,7 @@ import com.example.blogapp.config.BlogMessageConfig;
 import com.example.blogapp.domain.blog.BlogDao;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.model.blog.*;
+import com.example.blogapp.utils.DateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Arrays;
 
 @Slf4j
@@ -20,6 +23,10 @@ public class BlogObjectMapper {
     ObjectMapper objectMapper;
 
     BlogMessageConfig blogMessageConfig;
+
+
+    public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm:ss";
+
 
     @Autowired
     public BlogObjectMapper(ObjectMapper objectMapper, BlogMessageConfig blogMessageConfig) {
@@ -36,9 +43,10 @@ public class BlogObjectMapper {
              * If the blogPayload is either being sent for creation or update, only then create the dao object to be
              * saved in the db.
              */
-            if (blogPayload instanceof BlogCreate || blogPayload instanceof BlogUpdate){
+            if (blogPayload instanceof BlogCreate || blogPayload instanceof BlogUpdate) {
                 blogDao = objectMapper.readValue(new Gson().toJson(blogPayload), BlogDao.class);
-                blogDao.setPublishedDate(String.valueOf(System.currentTimeMillis()));
+                Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+                blogDao.setPublishedDate(timestamp);
                 blogDao.setStatus("Under review");
             }
             else {
@@ -75,13 +83,15 @@ public class BlogObjectMapper {
         return blogCreateRes;
     }
 
-    public Blog convertsBlogPageToBlog(BlogDao blogDao) {
+    public Blog generateBlogListRes(BlogDao blogDao) {
         Blog blog;
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
             blog = objectMapper.readValue(new Gson().toJson(blogDao), Blog.class);
-        } catch (JsonProcessingException e) {
+            blog.setPublishedDate(DateUtil.convertToCompliantDateFormat(blogDao.getPublishedDate(),
+                    "dd-MMM-yyyy hh:mm a"));
+        } catch (JsonProcessingException | ParseException e) {
             throw new BlogApiException(e, e.getMessage());
         }
         return blog;
@@ -93,12 +103,15 @@ public class BlogObjectMapper {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
+
             blogDetailRes = objectMapper.readValue(new Gson().toJson(blogDao), BlogDetailRes.class);
+            blogDetailRes.setPublishedDate(DateUtil.convertToCompliantDateFormat
+                    (blogDao.getPublishedDate(), "dd-MMM-yyyy hh:mm a"));
             ResultStatus resultStatus = new ResultStatus();
             resultStatus.setStatus("Success");
             resultStatus.setMessage("Blog created successfully");
             blogDetailRes.setResultStatus(resultStatus);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | BlogApiException | ParseException e) {
             log.error(String.format("getClass()%s%s%s%s", " ", "generateBlogDetailRes", " ", Arrays.
                     toString(e.getStackTrace())));
 

@@ -1,24 +1,11 @@
 package com.example.blogapp.controllers;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.when;
-
-import com.example.blogapp.model.blog.BlogCreateRes;
-import com.example.blogapp.model.blog.BlogDeleteRes;
-import com.example.blogapp.model.blog.BlogDetailRes;
-import com.example.blogapp.model.blog.BlogListRes;
-import com.example.blogapp.model.blog.BlogUpdateRes;
-import com.example.blogapp.model.blog.ResultStatus;
-import com.example.blogapp.service.BlogCreate;
+import com.example.blogapp.model.blog.*;
 import com.example.blogapp.service.BlogDelete;
 import com.example.blogapp.service.BlogDetails;
 import com.example.blogapp.service.BlogList;
 import com.example.blogapp.service.BlogUpdate;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +17,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {BlogController.class})
 @ExtendWith(SpringExtension.class)
@@ -65,7 +56,7 @@ class BlogControllerTest {
         BlogCreateRes blogCreateRes = new BlogCreateRes();
         blogCreateRes.setId(1);
         blogCreateRes.setResultStatus(resultStatus);
-        when(blogCreate.createBlog((com.example.blogapp.model.blog.BlogCreate) any())).thenReturn(blogCreateRes);
+        when(blogCreate.createBlog(any())).thenReturn(blogCreateRes);
 
         com.example.blogapp.model.blog.BlogCreate blogCreate1 = new com.example.blogapp.model.blog.BlogCreate();
         blogCreate1.setContent("Not all who wander are lost");
@@ -102,7 +93,7 @@ class BlogControllerTest {
         blogListRes.setResultStatus(resultStatus);
         blogListRes.setTotalElements(1);
         blogListRes.setTotalPages(1);
-        when(blogList.getBlogs(anyInt(), anyInt(), (String) any(), (String) any())).thenReturn(blogListRes);
+        when(blogList.getBlogs(anyInt(), anyInt(), any(), any())).thenReturn(blogListRes);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/get-blogs");
         MockMvcBuilders.standaloneSetup(blogController)
                 .build()
@@ -187,7 +178,7 @@ class BlogControllerTest {
         BlogUpdateRes blogUpdateRes = new BlogUpdateRes();
         blogUpdateRes.setId(1);
         blogUpdateRes.setResultStatus(resultStatus);
-        when(blogUpdate.updateBlog((com.example.blogapp.model.blog.BlogUpdate) any())).thenReturn(blogUpdateRes);
+        when(blogUpdate.updateBlog(any())).thenReturn(blogUpdateRes);
 
         com.example.blogapp.model.blog.BlogUpdate blogUpdate1 = new com.example.blogapp.model.blog.BlogUpdate();
         blogUpdate1.setContent("Not all who wander are lost");
