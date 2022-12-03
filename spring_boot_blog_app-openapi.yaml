@@ -1,0 +1,230 @@
+openapi: "3.0.3"
+info:
+  title: "spring_boot_blog_app API"
+  description: "spring_boot_blog_app API"
+  version: "1.0.0"
+servers:
+  - url: "https://spring_boot_blog_app"
+paths:
+  /v1/create-blog:
+    post:
+      summary: "To create a blog"
+      operationId: "createBlog"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogCreate"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogCreateRes"
+  /v1/get-blogs:
+    get:
+      summary: "Get list of all blogs"
+      operationId: "getBlogs"
+      parameters:
+        - name: "pageNo"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "0"
+        - name: "pageSize"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+            default: "10"
+        - name: "sortBy"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "id"
+        - name: "sortDir"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogListRes"
+  /v1/delete-blog:
+    delete:
+      summary: "To delete a blog"
+      operationId: "deleteBlog"
+      parameters:
+        - name: "blogId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogDeleteRes"
+  /v1/get-blog-details:
+    get:
+      summary: "Retrieve a specific blog."
+      operationId: "getBlogDetails"
+      parameters:
+        - name: "id"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogDetailRes"
+  /v1/update-blog:
+    put:
+      summary: "To update the blog."
+      operationId: "updateBlog"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogUpdate"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogUpdateRes"
+  /v1/delete-all-blog:
+    delete:
+      summary: "To delete all blogs."
+      operationId: "blogDeleteListRes"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogDeleteListRes"
+components:
+  schemas:
+    BlogCreate:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        content:
+          type: "string"
+    ResultStatus:
+      type: "object"
+      properties:
+        statusCode:
+          type: "string"
+        status:
+          type: "string"
+        message:
+          type: "string"
+    BlogCreateRes:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
+    Blog:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        title:
+          type: "string"
+        content:
+          type: "string"
+        status:
+          type: "string"
+        publishedDate:
+          type: "string"
+    BlogListRes:
+      type: "object"
+      properties:
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
+        blogList:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Blog"
+        pageNo:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        totalPages:
+          type: "integer"
+          format: "int32"
+    BlogDeleteRes:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
+    BlogDetailRes:
+      type: "object"
+      properties:
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
+        id:
+          type: "string"
+        title:
+          type: "string"
+        content:
+          type: "string"
+        publishedDate:
+          type: "string"
+        status:
+          type: "string"
+    BlogUpdate:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        title:
+          type: "string"
+        content:
+          type: "string"
+    BlogUpdateRes:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
+    BlogDeleteListRes:
+      type: "object"
+      properties:
+        resultStatus:
+          $ref: "#/components/schemas/ResultStatus"
