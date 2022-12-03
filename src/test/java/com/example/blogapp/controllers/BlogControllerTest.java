@@ -1,10 +1,8 @@
 package com.example.blogapp.controllers;
 
 import com.example.blogapp.model.blog.*;
-import com.example.blogapp.service.BlogDelete;
-import com.example.blogapp.service.BlogDetails;
-import com.example.blogapp.service.BlogList;
 import com.example.blogapp.service.BlogUpdate;
+import com.example.blogapp.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +23,9 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = {BlogController.class})
 @ExtendWith(SpringExtension.class)
 class BlogControllerTest {
+    @MockBean
+    private BlogListDeleteService blogListDeleteService;
+
     @Autowired
     private BlogController blogController;
 
@@ -42,6 +43,31 @@ class BlogControllerTest {
 
     @MockBean
     private BlogUpdate blogUpdate;
+
+    /**
+     * Method under test: {@link BlogController#blogDeleteListRes()}
+     */
+    @Test
+    void testBlogDeleteListRes() throws Exception {
+        ResultStatus resultStatus = new ResultStatus();
+        resultStatus.setMessage("Not all who wander are lost");
+        resultStatus.setStatus("Status");
+        resultStatus.setStatusCode("Status Code");
+
+        BlogDeleteListRes blogDeleteListRes = new BlogDeleteListRes();
+        blogDeleteListRes.setResultStatus(resultStatus);
+        when(blogListDeleteService.deleteAllBlogs()).thenReturn(blogDeleteListRes);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/v1/delete-all-blog");
+        MockMvcBuilders.standaloneSetup(blogController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"resultStatus\":{\"statusCode\":\"Status Code\",\"status\":\"Status\",\"message\":\"Not all who wander are"
+                                        + " lost\"}}"));
+    }
 
     /**
      * Method under test: {@link BlogController#createBlog(com.example.blogapp.model.blog.BlogCreate)}
@@ -62,7 +88,7 @@ class BlogControllerTest {
         blogCreate1.setContent("Not all who wander are lost");
         blogCreate1.setTitle("Dr");
         String content = (new ObjectMapper()).writeValueAsString(blogCreate1);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/create-blog")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/v1/create-blog")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(blogController)
@@ -94,7 +120,7 @@ class BlogControllerTest {
         blogListRes.setTotalElements(1);
         blogListRes.setTotalPages(1);
         when(blogList.getBlogs(anyInt(), anyInt(), any(), any())).thenReturn(blogListRes);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/get-blogs");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/get-blogs");
         MockMvcBuilders.standaloneSetup(blogController)
                 .build()
                 .perform(requestBuilder)
@@ -120,7 +146,7 @@ class BlogControllerTest {
         blogDeleteRes.setId(1);
         blogDeleteRes.setResultStatus(resultStatus);
         when(blogDelete.deleteBlog(anyInt())).thenReturn(blogDeleteRes);
-        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/delete-blog");
+        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/v1/delete-blog");
         MockHttpServletRequestBuilder requestBuilder = deleteResult.param("blogId", String.valueOf(1));
         MockMvcBuilders.standaloneSetup(blogController)
                 .build()
@@ -151,7 +177,7 @@ class BlogControllerTest {
         blogDetailRes.setStatus("Status");
         blogDetailRes.setTitle("Dr");
         when(blogDetails.getBlogDetails(anyInt())).thenReturn(blogDetailRes);
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/get-blog-details");
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/v1/get-blog-details");
         MockHttpServletRequestBuilder requestBuilder = getResult.param("id", String.valueOf(1));
         MockMvcBuilders.standaloneSetup(blogController)
                 .build()
@@ -185,7 +211,7 @@ class BlogControllerTest {
         blogUpdate1.setId(1);
         blogUpdate1.setTitle("Dr");
         String content = (new ObjectMapper()).writeValueAsString(blogUpdate1);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/update-blog")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/v1/update-blog")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(blogController)

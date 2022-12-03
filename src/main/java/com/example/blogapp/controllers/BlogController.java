@@ -4,6 +4,7 @@ import com.example.blogapp.model.blog.*;
 import com.example.blogapp.service.BlogDelete;
 import com.example.blogapp.service.BlogDetails;
 import com.example.blogapp.service.BlogList;
+import com.example.blogapp.service.BlogListDeleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,10 @@ import javax.validation.constraints.NotNull;
 import static com.example.blogapp.utils.AppConstants.*;
 
 @RestController
+@RequestMapping(value = "/v1")
 public class BlogController {
     public static final String EMPTY_ID_MESSAGE = "The id cannot be null/empty";
+    private final BlogListDeleteService blogListDeleteService;
     com.example.blogapp.service.BlogCreate blogCreateService;
     BlogList blogListService;
 
@@ -28,12 +31,13 @@ public class BlogController {
     @Autowired
     public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogList blogListService,
                           BlogDelete blogDeleteService, BlogDetails blogDetailsService,
-                          com.example.blogapp.service.BlogUpdate blogUpdateService) {
+                          com.example.blogapp.service.BlogUpdate blogUpdateService, BlogListDeleteService blogListDeleteService) {
         this.blogCreateService = blogCreateService;
         this.blogListService = blogListService;
         this.blogDeleteService = blogDeleteService;
         this.blogDetailsService = blogDetailsService;
         this.blogUpdateService = blogUpdateService;
+        this.blogListDeleteService = blogListDeleteService;
     }
 
     @PostMapping(value = "/create-blog", produces = "application/json")
@@ -65,13 +69,18 @@ public class BlogController {
     @GetMapping(value = "/get-blog-details", produces = "application/json")
     @ResponseBody
     BlogDetailRes getBlogDetails(@NotEmpty(message = EMPTY_ID_MESSAGE) @NotNull(message = EMPTY_ID_MESSAGE)
-                                 @RequestParam int id){
+                                 @RequestParam int id) {
         return blogDetailsService.getBlogDetails(id);
     }
 
     @PutMapping(value = "/update-blog", produces = "application/json")
-    BlogUpdateRes updateBlog(@RequestBody BlogUpdate blogUpdate){
+    BlogUpdateRes updateBlog(@RequestBody BlogUpdate blogUpdate) {
         return blogUpdateService.updateBlog(blogUpdate);
+    }
+
+    @DeleteMapping(value = "/delete-all-blog", produces = "application/json")
+    BlogDeleteListRes blogDeleteListRes() {
+        return blogListDeleteService.deleteAllBlogs();
     }
 
 }
