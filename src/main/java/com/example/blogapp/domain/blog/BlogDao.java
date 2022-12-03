@@ -3,6 +3,7 @@ package com.example.blogapp.domain.blog;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 @Data
@@ -22,7 +23,7 @@ public class BlogDao {
     private String content;
 
     @Column(name = "published_date")
-    private String publishedDate;
+    private Timestamp publishedDate;
 
     @Column(name = "status")
     private String status;

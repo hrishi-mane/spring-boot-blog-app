@@ -3,9 +3,9 @@ package com.example.blogapp.service;
 import com.example.blogapp.domain.blog.BlogDao;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.mapper.BlogObjectMapper;
-import com.example.blogapp.model.blog.ResultStatus;
-import com.example.blogapp.model.blog.BlogListRes;
 import com.example.blogapp.model.blog.Blog;
+import com.example.blogapp.model.blog.BlogListRes;
+import com.example.blogapp.model.blog.ResultStatus;
 import com.example.blogapp.repository.BlogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class BlogListService implements BlogList {
 
 
             List<Blog> blogRespons = blogPage.getContent().stream().
-                    map(blogObjectMapper::convertsBlogPageToBlog).collect(Collectors.toList());
+                    map(blogObjectMapper::generateBlogListRes).collect(Collectors.toList());
 
             return makeResponse(blogRespons, blogPage);
         } catch (Exception exp) {

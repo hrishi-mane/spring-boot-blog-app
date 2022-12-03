@@ -42,7 +42,6 @@ public class BlogCreateService implements com.example.blogapp.service.BlogCreate
         BlogCreateRes blogCreateRes;
         try {
             blogDao = blogObjectMapper.generateBlogDao(blogCreate);
-            blogDao.setPublishedDate(String.valueOf(System.currentTimeMillis()));
             blogCreateRes = blogObjectMapper.generateBlogCreateRes(blogRepository.save(blogDao));
 
             /*
