@@ -41,7 +41,6 @@ public class BlogController {
     }
 
     @PostMapping(value = "/create-blog", produces = "application/json")
-
     public BlogCreateRes createBlog(@Valid @RequestBody BlogCreate blogCreate) {
         return blogCreateService.createBlog(blogCreate);
     }
@@ -62,7 +61,7 @@ public class BlogController {
 
     @DeleteMapping(value = "/delete-blog", produces = "application/json")
     @ResponseBody
-    BlogDeleteRes deleteBlog(@RequestParam(value = "blogId", required = true) int blogId) {
+    BlogDeleteRes deleteBlog(@RequestParam(value = "blogId") int blogId) {
         return blogDeleteService.deleteBlog(blogId);
     }
 
