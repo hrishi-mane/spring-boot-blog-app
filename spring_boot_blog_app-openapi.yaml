@@ -1,10 +1,10 @@
 openapi: "3.0.3"
 info:
-  title: "spring_boot_blog_app API"
-  description: "spring_boot_blog_app API"
+  title: "Blog App"
+  description: "REST api to perform CRUD operation on blogs."
   version: "1.0.0"
 servers:
-  - url: "https://spring_boot_blog_app"
+  - url: "http://localhost:8080"
 paths:
   /v1/create-blog:
     post:
