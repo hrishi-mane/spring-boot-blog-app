@@ -1,7 +1,6 @@
 package com.example.blogapp.exception.handler;
 
 import com.example.blogapp.exception.BlogApiException;
-import com.example.blogapp.model.blog.BlogCreateRes;
 import com.example.blogapp.model.blog.ResultStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
