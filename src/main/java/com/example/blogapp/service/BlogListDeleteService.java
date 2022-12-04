@@ -3,12 +3,14 @@ package com.example.blogapp.service;
 import com.example.blogapp.model.blog.BlogDeleteListRes;
 import com.example.blogapp.model.blog.ResultStatus;
 import com.example.blogapp.repository.BlogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BlogListDeleteService implements BlogListDelete {
     private final BlogRepository blogRepository;
 
+    @Autowired
     public BlogListDeleteService(BlogRepository blogRepository) {
         this.blogRepository = blogRepository;
     }
