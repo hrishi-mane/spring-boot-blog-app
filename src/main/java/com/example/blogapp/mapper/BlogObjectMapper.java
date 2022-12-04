@@ -4,6 +4,7 @@ import com.example.blogapp.config.BlogMessageConfig;
 import com.example.blogapp.domain.blog.BlogDao;
 import com.example.blogapp.exception.BlogApiException;
 import com.example.blogapp.model.blog.*;
+import com.example.blogapp.utils.AppConstants;
 import com.example.blogapp.utils.DateUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Arrays;
 
 @Slf4j
@@ -23,9 +23,6 @@ public class BlogObjectMapper {
     ObjectMapper objectMapper;
 
     BlogMessageConfig blogMessageConfig;
-
-
-    public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
 
     @Autowired
@@ -50,13 +47,13 @@ public class BlogObjectMapper {
                 blogDao.setStatus("Under review");
             }
             else {
-                log.info(String.format("getClass()%s%s%s%s", " ", "convertBlogCreateToBlogCreateDomain", " ",
+                log.info(String.format(AppConstants.CLS_MET_ERROR, " ", "convertBlogCreateToBlogCreateDomain", " ",
                         blogMessageConfig.getIncorrectObjectTypeMessage()));
                 throw new BlogApiException(blogMessageConfig.getIncorrectObjectTypeMessage());
             }
 
         } catch (JsonProcessingException e) {
-            log.info(String.format("getClass()%s%s%s%s", " ", "convertBlogCreateToBlogCreateDomain", " ",
+            log.info(String.format(AppConstants.CLS_MET_ERROR, " ", "convertBlogCreateToBlogCreateDomain", " ",
                     Arrays.toString(e.getStackTrace())));
 
             throw new BlogApiException(e, e.getMessage());
@@ -72,10 +69,10 @@ public class BlogObjectMapper {
         try {
             blogCreateRes = objectMapper.readValue(new Gson().toJson(blogDao), BlogCreateRes.class);
             ResultStatus resultStatus = new ResultStatus();
-            resultStatus.setStatus("Success");
+            resultStatus.setStatus(AppConstants.SUCCESS_MESSAGE);
             blogCreateRes.setResultStatus(resultStatus);
         } catch (JsonProcessingException e) {
-            log.info(String.format("getClass()%s%s%s%s", " ", "generateBlogCreateRes", " ",
+            log.info(String.format(AppConstants.CLS_MET_ERROR, " ", "generateBlogCreateRes", " ",
                     Arrays.toString(e.getStackTrace())));
 
             throw new BlogApiException(e, e.getMessage());
@@ -91,7 +88,7 @@ public class BlogObjectMapper {
             blog = objectMapper.readValue(new Gson().toJson(blogDao), Blog.class);
             blog.setPublishedDate(DateUtil.convertToCompliantDateFormat(blogDao.getPublishedDate(),
                     "dd-MMM-yyyy hh:mm a"));
-        } catch (JsonProcessingException | ParseException e) {
+        } catch (JsonProcessingException e) {
             throw new BlogApiException(e, e.getMessage());
         }
         return blog;
@@ -108,11 +105,11 @@ public class BlogObjectMapper {
             blogDetailRes.setPublishedDate(DateUtil.convertToCompliantDateFormat
                     (blogDao.getPublishedDate(), "dd-MMM-yyyy hh:mm a"));
             ResultStatus resultStatus = new ResultStatus();
-            resultStatus.setStatus("Success");
+            resultStatus.setStatus(AppConstants.SUCCESS_MESSAGE);
             resultStatus.setMessage("Blog created successfully");
             blogDetailRes.setResultStatus(resultStatus);
-        } catch (JsonProcessingException | BlogApiException | ParseException e) {
-            log.error(String.format("getClass()%s%s%s%s", " ", "generateBlogDetailRes", " ", Arrays.
+        } catch (JsonProcessingException | BlogApiException e) {
+            log.error(String.format(AppConstants.CLS_MET_ERROR, " ", "generateBlogDetailRes", " ", Arrays.
                     toString(e.getStackTrace())));
 
             throw new BlogApiException(e, e.getMessage());
@@ -128,12 +125,12 @@ public class BlogObjectMapper {
         try{
             blogUpdateRes = objectMapper.readValue(new Gson().toJson(blogDao), BlogUpdateRes.class);
             ResultStatus resultStatus = new ResultStatus();
-            resultStatus.setStatus("Success");
+            resultStatus.setStatus(AppConstants.SUCCESS_MESSAGE);
             resultStatus.setMessage("Blog updated successfully");
             blogUpdateRes.setResultStatus(resultStatus);
             blogUpdateRes.setResultStatus(resultStatus);
         } catch (JsonProcessingException e){
-            log.error(String.format("getClass()%s%s%s%s", " ", "generateBlogUpdateRes", " ", Arrays.
+            log.error(String.format(AppConstants.CLS_MET_ERROR, " ", "generateBlogUpdateRes", " ", Arrays.
                     toString(e.getStackTrace())));
             throw new BlogApiException(e, e.getMessage());
         }

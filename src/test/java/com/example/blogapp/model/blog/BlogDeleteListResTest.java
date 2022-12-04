@@ -69,7 +69,7 @@ class BlogDeleteListResTest {
 
         BlogDeleteListRes blogDeleteListRes = new BlogDeleteListRes();
         blogDeleteListRes.setResultStatus(resultStatus);
-        assertNotEquals(blogDeleteListRes, null);
+        assertNotEquals(null, blogDeleteListRes);
     }
 
     /**
@@ -84,7 +84,7 @@ class BlogDeleteListResTest {
 
         BlogDeleteListRes blogDeleteListRes = new BlogDeleteListRes();
         blogDeleteListRes.setResultStatus(resultStatus);
-        assertNotEquals(blogDeleteListRes, "Different type to BlogDeleteListRes");
+        assertNotEquals("Different type to BlogDeleteListRes", blogDeleteListRes);
     }
 
     /**

@@ -19,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
-public class BlogCreateServiceTest {
+class BlogCreateServiceTest {
     BlogDao blogDao;
     BlogCreateRes blogCreateRes;
     com.example.blogapp.model.blog.BlogCreate blogCreate;
@@ -42,7 +41,7 @@ public class BlogCreateServiceTest {
 
 
     @org.junit.jupiter.api.Test
-    public void testCreateBlog() {
+    void testCreateBlog() {
         blogCreateRes.setId(1);
         ResultStatus resultStatus = new ResultStatus();
         resultStatus.setStatus("Success");
@@ -56,14 +55,14 @@ public class BlogCreateServiceTest {
 
 
     @Test
-    public void testCreateBlog2() {
+    void testCreateBlog2() {
         when(blogObjectMapper.generateBlogDao(blogCreate)).thenThrow(new BlogApiException("Exception occured"));
         assertThrows(BlogApiException.class, () -> blogCreateService.createBlog(blogCreate));
     }
 
 
     @Test
-    public void testCreateBlog3() {
+    void testCreateBlog3() {
         when(blogObjectMapper.generateBlogDao(blogCreate)).thenReturn(blogDao);
         when(blogRepository.save(blogDao)).thenReturn(blogDao);
         when(blogObjectMapper.generateBlogCreateRes(blogDao)).thenReturn(blogCreateRes);
