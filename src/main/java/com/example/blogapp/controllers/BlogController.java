@@ -31,7 +31,8 @@ public class BlogController {
     @Autowired
     public BlogController(com.example.blogapp.service.BlogCreate blogCreateService, BlogList blogListService,
                           BlogDelete blogDeleteService, BlogDetails blogDetailsService,
-                          com.example.blogapp.service.BlogUpdate blogUpdateService, BlogListDeleteService blogListDeleteService) {
+                          com.example.blogapp.service.BlogUpdate blogUpdateService,
+                          BlogListDeleteService blogListDeleteService) {
         this.blogCreateService = blogCreateService;
         this.blogListService = blogListService;
         this.blogDeleteService = blogDeleteService;
