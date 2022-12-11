@@ -9,7 +9,8 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class GlobalExceptionHandlerTest {
@@ -51,20 +52,6 @@ public class GlobalExceptionHandlerTest {
         verify(beanPropertyBindingResult).getFieldError();
     }
 
-    /**
-     * Method under test: {@link GlobalExceptionHandler#handleMethodArgumentNotValidException(MethodArgumentNotValidException)}
-     */
-    @Test
-    public void testHandleMethodArgumentNotValidException6() {
-        GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
-        FieldError fieldError = mock(FieldError.class);
-        when(fieldError.getDefaultMessage()).thenThrow(new BlogApiException("An error occurred"));
-        BeanPropertyBindingResult beanPropertyBindingResult = mock(BeanPropertyBindingResult.class);
-        when(beanPropertyBindingResult.getFieldError()).thenReturn(fieldError);
-        assertThrows(BlogApiException.class, () -> globalExceptionHandler
-                .handleMethodArgumentNotValidException(new MethodArgumentNotValidException(null, beanPropertyBindingResult)));
-        verify(beanPropertyBindingResult).getFieldError();
-        verify(fieldError).getDefaultMessage();
-    }
+
 }
 
